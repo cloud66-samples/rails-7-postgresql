@@ -65,14 +65,16 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use a different cache store in production.
-  config.cache_store = :redis_store, {
-    url: ENV.fetch("REDIS_URL"),
-    sentinels: [{ host: ENV.fetch("REDIS_ADDRESS"), port: 26_379 }],
-    role: 'master',
-    sentinel_username: "default",
-    sentinel_password: ENV.fetch("REDIS_PASSWORD"),
-    expires_in: 1.hour
-  }
+  if ENV.fetch("REDIS_URL", nil).present?
+    config.cache_store = :redis_store, {
+      url: ENV.fetch("REDIS_URL"),
+      sentinels: [{ host: ENV.fetch("REDIS_ADDRESS"), port: 26_379 }],
+      role: 'master',
+      sentinel_username: "default",
+      sentinel_password: ENV.fetch("REDIS_PASSWORD"),
+      expires_in: 1.hour
+    }
+  end
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
