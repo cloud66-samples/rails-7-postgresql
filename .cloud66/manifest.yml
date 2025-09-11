@@ -1,0 +1,3 @@
+rails:
+  configuration:
+    memory_allocator: jemalloc
