@@ -67,9 +67,10 @@ Rails.application.configure do
   # Use a different cache store in production.
   if ENV.fetch("REDIS_URL", nil).present?
     config.cache_store = :redis_cache_store, {
+      name: "mymaster",
       url: ENV.fetch("REDIS_URL"),
       sentinels: [{ host: ENV.fetch("REDIS_ADDRESS"), port: 26_379 }],
-      role: 'master',
+      role: :master,
       sentinel_username: "default",
       sentinel_password: ENV.fetch("REDIS_PASSWORD"),
       expires_in: 1.hour
